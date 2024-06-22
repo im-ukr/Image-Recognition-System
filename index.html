@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Symbol Recognition</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #87CEFA, #ADD8E6); /* Gradient background */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+    overflow-y: scroll; /* Show vertical scrollbar */
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#fileInput {
+    display: none;
+}
+
+.uploadButton, .clearButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 10px;
+    transition: background-color 0.3s; /* Smooth button hover effect */
+}
+
+.uploadButton:hover, .clearButton:hover {
+    background-color: #0056b3;
+}
+
+.clearButton {
+    background-color: #dc3545; /* Red background color */
+}
+
+#output {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+}
+#imagePreview {
+    max-width: 45%; /* Set the width of the preview image */
+    position: relative; /* Position the image relative to its normal position */
+    left: 25%; /* Position the image x% from the left edge */
+}
+
+#imagePreviewGray {
+    max-width: 45%; /* Set the width of the grayscale image */
+    position: relative; /* Position the image relative to its normal position */
+    right: 25%; /* Position the image x% from the right edge */
+    animation: fadeIn 5s;
+}
+
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Moving message animation OF TOP MESSAGE*/
+@keyframes moveMessage {
+    0% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Styling for two words IN TOP MSG to change colours */
+@keyframes highlight {
+    30% { color: red; }
+    50% { color: blue; }
+    100% { color: green; }
+}
+
+.highlight {
+    animation: highlight 2s infinite;
+}
+
+.message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: skyblue;  
+    color: black;
+    padding: 10px 0;
+    font-size: 14px;
+    text-align: center;
+    animation: moveMessage 70s linear infinite; 
+} 
+.images-container {
+    display: flex; /* Use flexbox for layout -- jaruri tha */
+    justify-content: space-between; /* Distribute items evenly along the main axis */
+}
+
+.preview-canvas {
+    max-width: 48%; /* Set the width of each image */
+}
+/* New styles for the About Us section */
+.about-us {
+    display: none; /* Hide the About Us section by default */
+    margin-top: 50px;
+    padding-top: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.about-us h2 {
+    margin-bottom: 20px;
+    color: black;
+}
+
+.about-us .founder {
+    display: inline-block;
+    margin: 0 20px;
+}
+
+.about-us img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+.about-us h3 {
+    margin: 0;
+    font-size: 18px;
+    color: black;
+    animation: colorChange 4s infinite;
+}
+
+@keyframes colorChange {
+    50% { color: black; }
+    100% { color: black; }
+}
+
+
+#toggleButton {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: transparent;
+    color: black;
+    border: 4px solid #007bff; /* Border with the desired color */
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth button hover effect */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.7); /* Glow effect */
+}
+
+#toggleButton:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light background color on hover */
+}
+
+#toggleButton.on {
+    background-color: rgba(0, 123, 255, 0.1); /* Light background color when active */
+}
+
+
+/* Style for the video */
+#bgVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90%;
+    object-fit: cover; /* Cover the entire container */
+    z-index: -1; /* Place the video behind other content */
+}
+
+
+/* Style for the content */
+.about-us {
+    position: relative;
+    z-index: 1; /* Ensure content is above the video */
+    color: white; 
+    padding: 20px;
+    text-align: center;
+    height: 100vh;
+}
+
+.about-us h4,
+.about-us p {
+    color: black;
+}
+/* Style for the input box - email?!*/
+.email-input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 800px;
+  height: 30px; /* Set the desired height */
+  font-size: 14px; /* Set the font size */ /* Set the width here */
+}
+
+/* Style for the submit button */
+.submit-button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+
+
+/* Submit button */
+.submit-button {
+    width: 100px; /* Set the desired width */
+    height: 43px; /* Set the desired height */
+    font-size: 18px; /* Set the font size */
+}
+
+@keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    .blink {
+        animation: blink 2s infinite;
+    }
+    
+    .loadcolorgif {
+    display: none;
+}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<!-- HTML -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<div class="message">
+    After uploading the image, please click on submit!
+    <b>Click at any point on the grayscale image to know the '<span class="highlight">Pixel Value</span>' and '<span class="highlight">Spatial Coordinates</span>' of that point.</b>
+</div>
+
+<div class="container">
+    <h1>Symbol Recognition</h1>
+    <label for="fileInput" class="uploadButton">Upload Image</label>
+    <input type="file" id="fileInput" onchange="previewImage(event)">
+    <button onclick="uploadImage()" class="uploadButton">Submit</button>
+    <button onclick="clearImage()" class="clearButton">Clear Image</button>
+    <p id="output"></p>
+    <div class="images-container">
+        <img src="project content/laptop.gif" class="custom-gif3" style="position: absolute; top: 75px; left: 980px; width: 130px; height: 130px;">
+        <img src="project content/detective-magnifying-glass.gif" class="custom-gif" style="position: absolute; top: 80px; left: 420px; width: 120px; height: 110px;">
+        <img src="project content/magnifying-glass.png" class="custom-image" style="position: absolute; top: 80px; left: 920px; width: 70px; height: 70px;">
+        <img src="project content/loading-colorful.gif" class="loadcolorgif" style="position: absolute; top: 10px; left: 338px; width: 840px; height: 50px;animation-iteration-count: infinite;">
+        <canvas id="imagePreview" class="preview-canvas" style="display: none;"></canvas>
+        <canvas id="imagePreviewGray" class="preview-canvas" style="display: none;"></canvas>
+    </div>
+ </div>
+<!-- Toggle button for About Us section -->
+<button id="toggleButton"><b>About</b></button>
+
+<!-- About Us section -->
+<div class="about-us" id="aboutUs">
+    <video autoplay muted loop id="bgVideo">
+        <source src="project content/videobg.mp4" type="video/mp4">
+    </video>
+    <h2><b>IPCV Sem-VI Project 2023-24 &#128512;</b></h2>
+    <div class="founder">
+        <img src="project content/utkarsh.jpg" alt="Founder 1">
+        <h3>Utkarsh Roy</h3>
+    </div>
+    <div class="founder">
+        <img src="project content/kanishk.jpg" alt="Founder 2">
+        <h3>Kanishk Mandrelia</h3>
+    </div>
+    <div class="founder">
+        <img src="project content/rabindra.png" alt="Founder 2">
+        <h3>Rabindra Mishra</h3>
+    </div>
+    <div class="founder">
+        <img src="project content/Raj.jpeg" alt="Founder 2">
+        <h3>Rajgaurav Mishra</h3>
+        
+    </div><br><br><br><br><br>
+    <div class="email-form">
+        <form>
+          <input type="text" id="emailInput" name="email" class="email-input" placeholder="Have Queries? Write here..." style="width: 200px;">
+          <button type="submit" class="submit-button" onclick="submitQuery()">Submit</button>
+        </form>
+        <img src="project content/quote.gif" class="image" style="position: absolute; top: 160px; left: 450px; width: 600px; height: 600px;">
+        <img src="project content/thinking-face.gif" class="image1" style="position: absolute; top: 320px; left: 930px; width: 90px; height: 90px;">
+      </div><br><br>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    <div style="position: relative;">
+        <div style="background-color: lightblue; padding: 20px;">
+            <div style="display: flex; justify-content: center;">
+                <h1 style="margin-bottom: 0;" class="blink">Frequently Asked Questions (FAQs)</h1>
+            </div>
+        </div>
+        <div style="position: absolute; left: -100%; right: -100%; top: 0; bottom: 0; background-color: lightblue; z-index: -1;"></div>
+    </div>
+    
+<h4>Q: How does the symbol recognition system work?</h4>
+<p>A: The system uses template matching to compare the uploaded image with pre-defined symbols.</p><br>
+
+<h4>Q: How does the symbol recognition process work?</h4>
+<p>A: The process involves loading template images of symbols, preprocessing the query image, and then comparing it with each template using template matching.</p><br>
+
+<h4>Q: What kind of symbols can be recognized?</h4>
+<p>A: The project is designed to recognize simple symbols or shapes that have been pre-defined in the template images.</p><br>
+
+<h4>Q: What is the confidence threshold for recognizing a symbol?</h4>
+<p>A: The confidence threshold is currently set to 70% and can be adjusted as per the requirements.</p><br>
+
+<h4>Q: Can I add my own symbols for recognition?</h4>
+<p>A: Yes, you can add your own symbols by placing them in the specified directory and ensuring they are in PNG or JPG format.</p><br>
+
+<h4>Q: How accurate is the symbol recognition?</h4>
+<p>A: The accuracy of the symbol recognition depends on the quality of the template images and the similarity between the query image and the templates.</p><br>
+
+<h4>Q: Is there a limit to the number of symbols that can be recognized?</h4>
+<p>A: There is no hard limit to the number of symbols that can be recognized, but the performance may vary based on the number of templates and the complexity of the symbols.</p><br>
+
+<h4>Q: Can I use this project for real-time symbol recognition?</h4>
+<p>A: While the project is not optimized for real-time processing, it can be used for batch processing of images containing symbols.</p><br>
+
+<h4>Q: What technologies are used in this project?</h4>
+<p>A: This project is built using Python with the Flask framework for the web server and OpenCV for image processing.</p><br>
+
+<h4>Q: How can I improve the accuracy of symbol recognition?</h4>
+<p>A: You can improve the accuracy by using high-quality template images, adjusting the confidence threshold, and experimenting with different preprocessing techniques.</p><br>
+
+    
+</div>
+
+</div>
+<script>
+function displayGreyscaleImage(file) {
+    const canvas = document.getElementById('imagePreviewGray');
+    const ctx = canvas.getContext('2d');
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const MAX_WIDTH = 200;
+                const MAX_HEIGHT = 200;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                for (let i = 0; i < data.length; i += 4) {
+                    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                    data[i] = avg;
+                    data[i + 1] = avg;
+                    data[i + 2] = avg;
+                }
+                ctx.putImageData(imageData, 0, 0);
+
+                canvas.style.display = 'inline-block'; 
+
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        canvas.style.display = 'none';
+    }
+}
+
+
+function previewImage(event) {
+    const file = event.target.files[0];
+    const canvas = document.getElementById('imagePreview');
+    const ctx = canvas.getContext('2d');
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const MAX_WIDTH = 200;
+                const MAX_HEIGHT = 200;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.style.display = 'block';
+                displayGreyscaleImage(file); // Display greyscale image
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        canvas.style.display = 'none';
+    }
+}
+
+// Function to display pixel value at clicked point on greyscale image
+function displayPixelValue(event) {
+    const canvas = document.getElementById('imagePreviewGray');
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.round((event.clientX - rect.left) * (canvas.width / rect.width));
+    const y = Math.round((event.clientY - rect.top) * (canvas.height / rect.height));
+
+    const imageData = ctx.getImageData(x, y, 1, 1);
+    const data = imageData.data;
+    const pixelValue = (data[0] + data[1] + data[2]) / 3; // Average of RGB values for greyscale
+
+    alert(`You have selected coordinates (x,y) = (${x},${y})\nThe Pixel Value at this point is = ${pixelValue}`);
+}
+
+// Add click event listener to greyscale image canvas
+const canvasGray = document.getElementById('imagePreviewGray');
+canvasGray.addEventListener('click', displayPixelValue);
+
+function clearImage() {
+    const fileInput = document.getElementById('fileInput');
+    const outputElement = document.getElementById('output');
+    const canvas = document.getElementById('imagePreview');
+    const ctx = canvas.getContext('2d');
+    const canvasGray = document.getElementById('imagePreviewGray');
+    const ctxGray = canvasGray.getContext('2d');
+    const pixelValueMessage = document.getElementById('pixelValueMessage'); 
+
+    fileInput.value = '';
+    outputElement.innerText = '';
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.style.display = 'none';
+    ctxGray.clearRect(0, 0, canvasGray.width, canvasGray.height);
+    canvasGray.style.display = 'none';
+    hideLoadColorGif();
+}
+
+
+function uploadImage() {
+    const fileInput = document.getElementById('fileInput');
+    const outputElement = document.getElementById('output');
+
+    const file = fileInput.files[0];
+    if (!file) {
+        outputElement.innerText = 'No file selected.';
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+    showLoadColorGif();
+
+    $.ajax({
+        url: 'http://127.0.0.1:5000/upload',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+            outputElement.innerText = data.result;
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            outputElement.innerText = 'An error occurred. Please try again.';
+        }
+    });
+}
+$('#toggleButton').click(function() {
+    $('#aboutUs').slideToggle();
+});
+
+function submitQuery() {
+    alert('Query submitted successfully');
+}
+
+function showLoadColorGif() {
+    // Show the loadcolorgif image
+    $('.loadcolorgif').show();
+}
+
+function hideLoadColorGif() {
+    // Hide the loadcolorgif image
+    $('.loadcolorgif').hide();
+}
+</script>
+</body>
+</html>
