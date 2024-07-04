@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Symbol Recognition</title>
+<title>Image Recognition</title>
 <style>
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom, #87CEFA, #ADD8E6); /* Gradient background */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-    overflow-y: scroll; /* Show vertical scrollbar */
+    background: linear-gradient(to bottom, #87CEFA, #ADD8E6); 
+    overflow-x: hidden; 
+    overflow-y: scroll; 
 }
 
 .container {
@@ -42,7 +42,7 @@ h1 {
     cursor: pointer;
     display: inline-block;
     margin-top: 10px;
-    transition: background-color 0.3s; /* Smooth button hover effect */
+    transition: background-color 0.3s; 
 }
 
 .uploadButton:hover, .clearButton:hover {
@@ -50,7 +50,7 @@ h1 {
 }
 
 .clearButton {
-    background-color: #dc3545; /* Red background color */
+    background-color: #dc3545; 
 }
 
 #output {
@@ -117,19 +117,19 @@ h1 {
     padding: 10px 0;
     font-size: 14px;
     text-align: center;
-    animation: moveMessage 70s linear infinite; 
+    animation: moveMessage 60s linear infinite; 
 } 
 .images-container {
     display: flex; /* Use flexbox for layout -- jaruri tha */
-    justify-content: space-between; /* Distribute items evenly along the main axis */
+    justify-content: space-between; 
 }
 
 .preview-canvas {
-    max-width: 48%; /* Set the width of each image */
+    max-width: 48%; 
 }
 /* New styles for the About Us section */
 .about-us {
-    display: none; /* Hide the About Us section by default */
+    display: none; 
     margin-top: 50px;
     padding-top: 20px;
     background-color: #fff;
@@ -175,38 +175,38 @@ h1 {
     font-size: 16px;
     background-color: transparent;
     color: black;
-    border: 4px solid #007bff; /* Border with the desired color */
+    border: 4px solid #007bff; 
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth button hover effect */
+    transition: background-color 0.3s, box-shadow 0.3s; 
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.7); /* Glow effect */
 }
 
 #toggleButton:hover {
-    background-color: rgba(0, 123, 255, 0.1); /* Light background color on hover */
+    background-color: rgba(0, 123, 255, 0.1); 
 }
 
 #toggleButton.on {
-    background-color: rgba(0, 123, 255, 0.1); /* Light background color when active */
+    background-color: rgba(0, 123, 255, 0.1); 
 }
 
 
-/* Style for the video */
+
 #bgVideo {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 90%;
-    object-fit: cover; /* Cover the entire container */
-    z-index: -1; /* Place the video behind other content */
+    object-fit: cover; 
+    z-index: -1; 
 }
 
 
 /* Style for the content */
 .about-us {
     position: relative;
-    z-index: 1; /* Ensure content is above the video */
+    z-index: 1; 
     color: white; 
     padding: 20px;
     text-align: center;
@@ -223,8 +223,8 @@ h1 {
   border: 1px solid #ccc;
   border-radius: 3px;
   width: 800px;
-  height: 30px; /* Set the desired height */
-  font-size: 14px; /* Set the font size */ /* Set the width here */
+  height: 30px; 
+  font-size: 14px; 
 }
 
 /* Style for the submit button */
@@ -241,9 +241,9 @@ h1 {
 
 /* Submit button */
 .submit-button {
-    width: 100px; /* Set the desired width */
-    height: 43px; /* Set the desired height */
-    font-size: 18px; /* Set the font size */
+    width: 100px; 
+    height: 43px; 
+    font-size: 18px; 
 }
 
 @keyframes blink {
@@ -271,7 +271,7 @@ h1 {
 </div>
 
 <div class="container">
-    <h1>Symbol Recognition</h1>
+    <h1>Image Recognition</h1>
     <label for="fileInput" class="uploadButton">Upload Image</label>
     <input type="file" id="fileInput" onchange="previewImage(event)">
     <button onclick="uploadImage()" class="uploadButton">Submit</button>
@@ -282,6 +282,9 @@ h1 {
         <img src="project content/detective-magnifying-glass.gif" class="custom-gif" style="position: absolute; top: 80px; left: 420px; width: 120px; height: 110px;">
         <img src="project content/magnifying-glass.png" class="custom-image" style="position: absolute; top: 80px; left: 920px; width: 70px; height: 70px;">
         <img src="project content/loading-colorful.gif" class="loadcolorgif" style="position: absolute; top: 10px; left: 338px; width: 840px; height: 50px;animation-iteration-count: infinite;">
+        <!--<img src="project content/lines.gif" class="lines" style="position: absolute; top: 510px; left: 0px; width: 2000px; height: 250px;animation-iteration-count: infinite;">
+        <img src="project content/progress-progressbar.gif" class="pbar" style="position: absolute; top: 125px; left: 698px; width: 120px; height: 30px;">
+        <img src="project content/among-us.gif" class="checkmark" style="position: absolute; top: 235px; left: 1030px; width: 90px; height: 90px;">-->
         <canvas id="imagePreview" class="preview-canvas" style="display: none;"></canvas>
         <canvas id="imagePreviewGray" class="preview-canvas" style="display: none;"></canvas>
     </div>
@@ -320,7 +323,10 @@ h1 {
         <img src="project content/quote.gif" class="image" style="position: absolute; top: 160px; left: 450px; width: 600px; height: 600px;">
         <img src="project content/thinking-face.gif" class="image1" style="position: absolute; top: 320px; left: 930px; width: 90px; height: 90px;">
       </div><br><br>
+      
+    
       <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 
     <div style="position: relative;">
         <div style="background-color: lightblue; padding: 20px;">
@@ -473,7 +479,7 @@ function displayPixelValue(event) {
     const data = imageData.data;
     const pixelValue = (data[0] + data[1] + data[2]) / 3; // Average of RGB values for greyscale
 
-    alert(`You have selected coordinates (x,y) = (${x},${y})\nThe Pixel Value at this point is = ${pixelValue}`);
+    alert(`You have selected coordinates (x,y) = (${x},${y})\nThe Pixel Value at this point is ${pixelValue}`);
 }
 
 // Add click event listener to greyscale image canvas
@@ -545,6 +551,7 @@ function hideLoadColorGif() {
     // Hide the loadcolorgif image
     $('.loadcolorgif').hide();
 }
+
 </script>
 </body>
 </html>

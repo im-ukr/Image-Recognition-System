@@ -6,8 +6,8 @@ import numpy as np
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Path to the directory containing symbol templates
-template_dir = os.path.join(os.path.dirname(__file__), "Emoji-Directory")
+# Path to the directory containing templates
+template_dir = r"Enter your directory path here"
 
 # Load template images from the directory
 template_images = []
@@ -47,10 +47,10 @@ def recognize_symbol(query_image):
     if best_match is not None and best_match_score >= 0.70:
         confidence_percent = "{:.2f}".format(best_match_score * 100)  # Convert confidence to percentage with 2 decimal places
         filename = os.listdir(template_dir)[best_match]
-        result_text = f"Recognized symbol: '{os.path.splitext(filename)[0]}' with confidence: {confidence_percent}%"
+        result_text = f"Recognized image: '{os.path.splitext(filename)[0]}' with confidence: {confidence_percent}%"
         return result_text
     else:
-        return "Symbol Not Recognized"
+        return "Not Recognized"
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -60,7 +60,7 @@ def upload_file():
         result = recognize_symbol(img)
         return jsonify({'result': result})
     else:
-        return jsonify({'result': 'No file uploaded'})
+        return jsonify({'result': 'No image uploaded'})
 
 if __name__ == '__main__':
     app.run(debug=True)
